@@ -178,6 +178,40 @@ ul li a:hover {
   border-radius: 100%;
 }
 
+.items-list {
+  padding-top: 99px;
+  margin-top: 2rem; /* Adjust based on layout */
+}
+
+.item {
+  background-color: #ffffff; /* Light background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  border-radius: 8px; /* Rounded corners */
+  padding: 1rem; /* Space inside the item */
+  margin-bottom: 1rem; /* Space between items */
+}
+
+.item-title {
+  color: var(--text-dark); /* Dark text for title */
+  margin-bottom: 0.5rem; /* Space between title and description */
+}
+
+.item-description {
+  color: var(--text-light); /* Lighter text for description */
+  font-size: 0.9rem; /* Slightly smaller font size */
+}
+
+.item-link {
+  text-decoration: none; /* Removes underline from links */
+  color: inherit; /* Ensures text color isn't changed by the link */
+  display: block; /* Makes the entire area clickable */
+}
+
+.item-link:hover .item {
+  background-color: #f0f0f0; /* Optional: Change background on hover for visual feedback */
+  cursor: pointer; /* Changes the cursor to indicate it's clickable */
+}
+
 @media (width < 750px) {
   nav .checkbox {
     display: block;
