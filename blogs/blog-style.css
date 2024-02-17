@@ -1,0 +1,82 @@
+/* style.css */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: "Charter", sans-serif;
+    font-size: 20px;
+    line-height: 1.6;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    margin-top: 90px;
+}
+
+article {
+    max-width: 800px;
+    text-align: center;
+}
+
+.post-content {
+    text-align: left;
+    margin: auto;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto;
+}
+
+.subtitle {
+    font-family: "Charter", sans-serif;
+    font-size: 0.8rem; /* Appropriately sized for subtitles */
+    color: #777777; /* Subtle, dark color for readability */
+    margin-top: -10px; /* Spacing above the subtitle */
+    margin-bottom: 1em; /* Spacing below the subtitle */
+    letter-spacing: 0.05em; /* Space out the letters slightly */
+    border-bottom: 2px solid #666; /* Underline for emphasis */
+    padding-bottom: 0.3em; /* Space between text and underline */
+    display: inline-block; /* Needed for the underline effect */
+  }
+
+  .title {
+    font-family: "Charter", sans-serif;
+    font-size: 2rem; /* Larger size for prominence */
+    color: #444; /* Deep, rich color for contrast */
+    font-weight: bold; /* Make the title stand out */
+    letter-spacing: -0.02em; /* Tighten letter spacing for impact */
+    
+  }
+  
+  .publisher-tag {
+    font-family: "Charter", sans-serif;
+    font-size: 0.9rem; /* Slightly smaller than body text for subtlety */
+    color: #777; /* Soft, dark gray for a less obtrusive look */
+    padding: 0.2em 0.5em; /* Padding around the text for better visibility */
+  }
+  
+
+  .section-title {
+    font-family: "Charter", sans-serif;
+    font-size: 1.5rem; /* Larger size for prominence */
+    color: #444; /* Deep, rich color for contrast */
+    font-weight: bold; /* Make the title stand out */
+    letter-spacing: -0.02em; /* Tighten letter spacing for impact */
+    
+  }
+
+  .link {
+    font-family: "Charter", serif;
+    color: #333;
+    font-weight: bold;
+  }
+
+  

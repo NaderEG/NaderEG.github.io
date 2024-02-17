@@ -277,6 +277,130 @@ ul li a:hover {
 .active:after {
   content: "\2796"; /* Unicode character for "minus" sign (-) */
 }
+.resume {
+  padding-top: 5rem; /* Adjust top padding due to fixed nav */
+  background-color: var(--extra-light);
+  display: flex;
+  justify-content: center;
+}
+
+.resume__container {
+  display: flex;
+  width: 100%;
+  max-width: var(--max-width);
+}
+
+.resume__info {
+  flex-basis: 30%; /* Adjust width as needed */
+  background-color: #786a97; /* Different color for left section */
+  color: #fff; /* Light text color for contrast */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content */
+}
+
+.info__image img {
+  width: 100px; /* Adjust based on preference */
+  height: 100px; /* Adjust to maintain aspect ratio */
+  border-radius: 50%; /* Circular image */
+  margin-bottom: 20px;
+}
+
+.info__name {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.info__role {
+  font-size: 0.8rem;
+  margin-bottom: 20px;
+}
+
+.info__contact p {
+  margin-bottom: 10px;
+}
+
+.resume__details {
+  flex-basis: 70%; /* Adjust width as needed */
+  padding: 20px;
+}
+
+.details__section {
+  margin-bottom: 2rem; /* Spacing between sections */
+  background-color: #fff; /* Light background for contrast */
+  padding: 15px;
+  border-radius: 8px; /* Rounded corners for a modern look */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+.details__section h2.subtitle {
+  color: var(--primary-color); /* Use the primary color for subtitles */
+  margin-bottom: 1rem;
+}
+
+.details__section h3 {
+  color: var(--text-dark); /* Dark color for sub-section titles */
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.details__section p, .details__section ul {
+  color: var(--text-light); /* Light color for text */
+  font-size: 0.9rem; /* Adjust font size for readability */
+}
+
+
+
+.education__item, .experience__item {
+  margin-top: 1rem;
+}
+
+.info__skills, .info__contact {
+  margin-top: 20px; /* Adds spacing above each subsection */
+}
+
+.info__subtitle {
+  margin-top: 10px;
+  font-size: 1.2rem; /* Slightly larger font size for subtitles */
+  color: #fff; /* White color for better contrast against the subsection background */
+  margin-bottom: 10px; /* Adds spacing below the subtitle */
+}
+
+
+.info__skills ul {
+  /* Resetting any column-related properties */
+  -webkit-column-count: 1 !important; /* For Safari and Chrome */
+  -moz-column-count: 1 !important; /* For Firefox */
+  column-count: 1 !important;
+  -webkit-column-gap: normal !important;
+  -moz-column-gap: normal !important;
+  column-gap: normal !important;
+}
+
+.resume__info ul li {
+  /* Ensuring list items do not break into columns */
+  -webkit-column-break-inside: avoid !important;
+  page-break-inside: avoid !important;
+  break-inside: avoid-column !important;
+}
+
+
+@media (max-width: 768px) {
+  .details__section {
+      margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .resume__container {
+      flex-direction: column;
+  }
+
+  .resume__info, .resume__details {
+      flex-basis: auto; /* Full width on smaller screens */
+  }
+}
 
 
 @media (width < 750px) {
