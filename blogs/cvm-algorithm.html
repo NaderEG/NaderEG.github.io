@@ -124,12 +124,51 @@
                         </code>
                         </pre>
                         <p>
+                            The runtime of the algorithm is \(O(nlogs)\) since it iterates over every element in the data stream and during each iteration there 
+                            is a chance that the algorithm will add, delete, or search in the buffer (which is a Treap of size \(s\)). This runtime is pretty good, since
+                            we were expecting at least a runtime of \(O(n)\) since you'd expect the algorithm to iterate over every element in the stream (if the stream 
+                            was live rather than static you'd be doing the analysis as you receive the data anyways). Then we simply have an increase by a factor of \(log(s)\), 
+                            and \(s\) will be small compared to \(n\), as we'll see.
+
+                        </p>
+                        <p>
                             While the algorithm looks easy to implement it may not be immediately apparent why 
                             it provides an estimation of the number of distinct elements in the stream. The general 
                             idea is that the algorithm maintains the property \(Pr(a_j \in B_t) = p_t, \; \forall j \in \;[1, t]\).
-                            If you have a keen eye, you might see what the trick is, but no worries, first let us check whether the algorithm 
-                            successfully maintains this property or not. 
+                            If you have a keen eye, you might see what the trick is, but no worries if you haven't caught it, first let us check whether the algorithm 
+                            successfully maintains this property or not. Within the algorithm, at a timestep \(t\) an element is only added to \(B\) when the random uniform 
+                            deviate \(u\) associated with the element is less than \(p_t\). This implies that the probability of an element being in \(B\) is \(p_t\) However, we do update the 
+                            value of \(p\) throughout the algorithm meaning we must make sure that every element in \(B\) at that point has a \(u\) value lesser than \(p\). If \(u > u'\) then 
+                            we set \(p = u\), the property is upheld in this case because \(u'\) is the largest value of \(u_j\in B\). If \(u \leq u'\) then we delete \(u'\) which is greater than \(u\), 
+                            and insert \(u\) into \(B\), then we set \(p = u'\) as such, \(p\) must be greater than \(u_j\in B\) in this case since \(u' \geq u\) and \(u'\) was the maximum value of \(u_j\in B\). 
+                            This shows that the property is upheld during the execution of the algorithm.
                         </p>
+                        <p>
+                            Now that we've proven the statement \(Pr(a_j \in B_t) = p_t, \; \forall j \in \;[1, t]\) is true, 
+                            let us show how this fact can be used to estimate the cardinality of \(A\). If any element in the 
+                            stream \(A_t\) has a probability \(p_t\) of being in \(B_t\) it can be said that the expected 
+                            cardinality of \(B_t\) is equal to \(A_t \times p_t\).
+                            In other words \(E[|B_t|] = p_t \times |A_t|\). Finally, we can express the same statement as \(\dfrac{E[|B_t|]}{p_t} = |A_t|\).
+                            This shows why our return value in the CVM Algorithm gives a valid estimate of the cardinality of \(A\). If you aren't used to working
+                            with probabilities this might seem a bit tricky. Just take a moment to really think about it and remember that the equations use random 
+                            variables and expected values.
+                        </p>
+
+                        <p>
+                            Proving that the CVM algorithm is a valid estimation of the Count-Distinct problem is great, but with approximation
+                            algorithms we tend to want to know the competetive ratio, in other words, we want to know how wrong the estimation might be.
+                            Unfortunately, Donald Knuth was not able to identify the upper bound on error in his paper on the algorithm.
+                            Proving this upper bound is beyond my ability as well,
+                            however, the lack of a concrete upper bound or competitive ratio motivated me to run simulations of the
+                            CVM Algorithm in order to at least observe the margin
+                            of error on average cases. This will hopefully provide
+                            anyone who wishes to use the algorithm with a rough
+                            idea of what a suitable buffer size would be for their
+                            data stream.
+                        </p>
+
+                        
+
                     
 
                         
