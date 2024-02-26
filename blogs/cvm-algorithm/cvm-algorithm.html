@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nader EG Blog | CVM Algorithm</title>
-    <link rel="stylesheet" href="blog-style.css">
+    <link rel="stylesheet" href="../blog-style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charter-webfont@4/charter.min.css" />
     <style>
         .codeblock {
@@ -28,7 +28,7 @@
         <article>
             <h1 class="title">The CVM Algorithm</h1>
             <h2 class="subtitle">An Algorithm for Estimating the Number of Unique Elements in a Data Stream</h2>
-            <p class="publisher-tag">Published on <time datetime="2024-02-17">February 17, 2024</time> by <a href="../index.html" class="link">Nader El-Ghotmi</a></p>
+            <p class="publisher-tag">Published on <time datetime="2024-02-17">February 20, 2024</time> by <a href="../../index.html" class="link">Nader El-Ghotmi</a></p>
             <section class="post-content">
                 <h2 class="section-title">Introduction</h2>
                 <p>The problem of counting the number of distinct elements in a data stream, 
@@ -55,7 +55,7 @@
                         proposed another algorithm. This algorithm was then refined by Donald Knuth, 
                         who also named it "The CVM Algorithm" (referring to the first letter of the last 
                         names of each of the original creators) in the same paper. Unlike the HyperLogLog algorithm, 
-                        which uses hashing, the CVM algorithm makes use of clever statistic in order to provide its estimation. 
+                        which uses hashing, the CVM algorithm makes use of clever statistics in order to provide its estimation. 
                         This means it is not only simple to understand, it's also simple to analyze.
                     </p>
 
@@ -156,16 +156,109 @@
 
                         <p>
                             Proving that the CVM algorithm is a valid estimation of the Count-Distinct problem is great, but with approximation
-                            algorithms we tend to want to know the competetive ratio, in other words, we want to know how wrong the estimation might be.
+                            algorithms we tend to want to know the competitive ratio, in other words, we want to know how wrong the estimation might be.
                             Unfortunately, Donald Knuth was not able to identify the upper bound on error in his paper on the algorithm.
                             Proving this upper bound is beyond my ability as well,
                             however, the lack of a concrete upper bound or competitive ratio motivated me to run simulations of the
-                            CVM Algorithm in order to at least observe the margin
+                            CVM Algorithm using different buffer sizes in order to at least observe the margin
                             of error on average cases. This will hopefully provide
                             anyone who wishes to use the algorithm with a rough
                             idea of what a suitable buffer size would be for their
-                            data stream.
+                            data stream. For the sake of the analysis I posit 2 different methods of creating data streams of size N. 
                         </p>
+
+                        <p>
+                            <b>Stream 1:</b> This stream simply counts up from 1 to N and thus only has distinct integers.
+
+                        </p>
+
+                        <p>
+                            <b>Stream 2:</b> This stream follows a normal distribution in terms of the frequency of an integer being 
+                            present in the stream. In other words, one integer will be present the most in the stream, two other integers 
+                            will be present marginally less, and again for the next two integers.
+                        </p>
+
+                        <p>Since I wanted to see how the accuracy of the algorithm would change based off of the buffer size I decided 
+                            to run the algorithm at different buffer sizes and plot charts depicting Buffer Size vs. Median Accuracy of 10 Attempts. 
+                            I used buffer sizes that increased exponentially for my data points in order to save time during the simulation and reduce 
+                            the inclusion of unnecessary data points.
+                        </p>
+
+                        <p>Here is a figure plotting buffer size vs accuracy for stream 1 constructed on 1 million elements. 
+                            
+                        </p>
+
+                        <img src="assets/stream1_1M_full_range.png">
+
+                        <p>As we can see, once the algorithm reaches a certain buffer size the benefit of increasing the buffer size is marginal. 
+                            This is good news since it tells us our buffer size doesn't need to be that large in order to get an accurate estimate. 
+                            But the graph itself doesn't tell us that much more since it has so much data crammed into it. Let's take a closer 
+                            look at the inflection point.
+                        </p>
+
+                        <img src="assets/stream1_1M.png">
+
+                        <p>Now we can see that it takes a buffer size a bit larger than 100 in order to get a result close to 100%, and going 
+                            larger from this point on seems like overkill. What would the graph look like if the stream was constructed on 10 million 
+                            elements?
+                        </p>
+                        <img src="assets/stream1_10M.png">
+                        <p>The behavior actually seems relatively similar, sporadic at first, and then steadying after a specific value. 
+                            But this time the trend steadies after a buffer size a bit larger than 200. So we can get similar accuracy on 
+                            a stream 10 times as large by only doubling the buffer size.
+                        </p>
+
+                        <p>Let's make the same comparison for Stream 2. Firstly, a graph for Stream 2 built on 1 million elements. 
+                            In this case, a buffer size of around 60 seems to do the trick, with any larger being overkill. As we can see the 
+                            graph for Stream 2 quickly stabilizes at a high percentage accuracy while the graph representing Stream 
+                            1 requires a larger buffer size before it stabilizes. Stream 1 had 100% distinct elements while stream 
+                            2 had 1%, which could be one reason for the need for a smaller buffer size. As such, if a developer is 
+                            anticipating a low amount of distinct elements in their data stream they may opt for a smaller buffer size.
+                        </p> 
+                        <img src="assets/stream2_1M.png">
+                        In the stream of 10 million elements our baseline buffer size looks to be at about 100. Which follows a similar to trend to when 
+                        we increased the size of Stream 1 to 10 million.
+                        <img src="assets/stream2_10M.png">
+
+                        <p>This is useful information but it is missing one thing. These charts are all made using a median value of 10 trials. 
+                            The problem with this is that it gives us an idea for average case, but doesn't portray what the margin of error 
+                            might be. So let us take a look at graphs which plot not only the average case estimation, but also the lowest and highest estimations.
+                        </p>
+                        <p>
+                            This is a graph plotting the actual number of distinct elements in the stream, the average case estimation, and the lowest/highest estimations 
+                            on a stream constructed using the logic of Stream 1 for 10 million elements.
+
+                        </p>
+                        <img src="assets/stream1_10M_var.png">
+                        <p>
+                            Now here is the same thing but for Stream 2.
+
+                        </p>
+                        <img src="assets/stream2_10M_var.png">
+                        <p>
+                            As we can see in these graphs, as the buffer size increases the variance drops significantly, 
+                            while the same is true for both streams the variance is larger for Stream 1 than it is for Stream 2. This 
+                            could be, again, because Stream 1 has 100% distinct elements while Stream 2 has 1% 
+                            distinct elements. A larger number of distinct elements will lead to more variance. 
+                            However, note that the median value on both graphs is still incredibly close to the correct value. Meaning that if you want 
+                            to get an accurate prediction on a data stream which has a lot of distinct elements it might be better to run multiple trials 
+                            rather than increasing your buffer size drastically.
+                        </p>
+
+                        <p>
+                            In general it seems that the competitive ratio is some function of the buffer size, the number of 
+                            distinct elements in the stream, and the size of the stream. 
+                            However, it's hard to get a good grasp of what this function is with the simulations I did. 
+                            Perhaps in the future I'll revisit this problem with the incentive of investigating the relationship between the margin of error 
+                            and each of the variables. For now, we can say that it seems the buffer size does not need to increase linearly with the number of distinct elements 
+                            or the size of the data stream. We also have some data that can help you make an educated guess if you choose to implement this algorithm.
+
+
+                        </p>
+
+                        
+
+                        
 
                         
 
@@ -175,6 +268,14 @@
             </section>
         </article>
     </main>
+    <footer>
+        <p>Sources:</p>
+        <p><a href="https://drops.dagstuhl.de/storage/00lipics/lipics-vol244-esa2022/LIPIcs.ESA.2022.34/LIPIcs.ESA.2022.34.pdf" class="link" target="_blank">S. Chakraborty, N. V. Vinodchandran¹, and K. S. Meel. Distinct Elements in Streams: An Algorithm for the (Text) Book. </a></p>
+
+        <p><a href="https://www-cs-faculty.stanford.edu/~knuth/papers/cvm-note.pdf" class="link" target="_blank">D. Knuth. The CVM Algorithm for Estimating Distinct Elements in Streams </a></p>
+
+        <p><a class="link">J. Leskovec, A. Rajaraman, and J. D. Ullman. Mining of massive datasets </a></p>
+    </footer>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </body>
